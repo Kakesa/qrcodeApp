@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import UrlsController from '#controllers/urls_controller' // Vérifiez la casse du nom du fichier
+// import AuthController from '#controllers/auth_controller'
 
 // Créer une instance du contrôleur
 const urlsController = new UrlsController()
