@@ -8,5 +8,12 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import UrlsController from '#controllers/urls_controller' // Vérifiez la casse du nom du fichier
 
-router.on('/').render('pages/home')
+// Créer une instance du contrôleur
+const urlsController = new UrlsController()
+
+// router.on('/').render('pages/home')
+router.get('/', (ctx) => urlsController.index(ctx))
+router.post('/shorten', (ctx) => urlsController.shorten(ctx))
+router.get('/:code', (ctx) => urlsController.redirect(ctx))

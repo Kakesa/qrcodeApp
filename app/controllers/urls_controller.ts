@@ -3,23 +3,39 @@ import QRCode from 'qrcode'
 import Url from '#models/url'
 
 export default class UrlsController {
+  /**
+   * Page d'accueil avec le formulaire
+   */
   async index({ view }: HttpContext) {
     return view.render('index')
   }
 
+  /**
+   * Raccourcir une URL et générer un QR code
+   */
   async shorten({ request, view }: HttpContext) {
     const originalUrl = request.input('url')
-    const shortCode = this.generateShortCode() // Appelle la méthode pour générer le code court
+    const shortCode = this.generateShortCode() // Génère un code court unique
 
-    // Crée une nouvelle entrée dans la base de données
-    const url = await Url.create({ original_url: originalUrl, short_code: shortCode })
+    // Sauvegarde en base de données
+    await Url.create({ original_url: originalUrl, short_code: shortCode })
 
-    // Génère le QR code
-    const qr = await QRCode.toDataURL(`${request.hostname()}/${shortCode}`)
+    // Construit l'URL complète (avec http:// + host + port)
+    const shortUrl = `http://${request.host()}/${shortCode}`
 
-    return view.render('index', { shortUrl: `${request.hostname()}/${shortCode}`, qr })
+    // Debug pour vérifier dans le terminal
+    console.log('Short URL générée :', shortUrl)
+
+    // Génère un QR Code encodé en DataURL (base64)
+    const qr = await QRCode.toDataURL(shortUrl)
+
+    // Renvoie vers la vue avec shortUrl + QR
+    return view.render('index', { shortUrl, qr })
   }
 
+  /**
+   * Rediriger depuis un short code vers l'URL originale
+   */
   async redirect({ params, response }: HttpContext) {
     const url = await Url.findBy('short_code', params.code)
     if (!url) return response.redirect('/')
@@ -27,6 +43,9 @@ export default class UrlsController {
     return response.redirect(url.original_url)
   }
 
+  /**
+   * Générateur de code court aléatoire
+   */
   private generateShortCode(length = 6): string {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     let shortCode = ''

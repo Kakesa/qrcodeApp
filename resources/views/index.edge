@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Raccourcisseur d’URL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Optionnel : Tailwind CSS pour un joli design -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+    <h1 class="text-2xl font-bold mb-6 text-center text-blue-600">
+      🔗 Raccourcisseur d’URL avec QR Code
+    </h1>
+
+    <!-- Formulaire -->
+    <form method="POST" action="/shorten" class="flex gap-2 mb-6">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      <input 
+        type="url" 
+        name="url" 
+        placeholder="Entrez votre URL à raccourcir" 
+        required
+        class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      >
+      <button 
+        type="submit" 
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      >
+        Raccourcir
+      </button>
+    </form>
+
+    <!-- Résultat -->
+    @if(shortUrl)
+      <div class="text-center space-y-4">
+        <p class="text-gray-700">
+          ✅ Votre URL raccourcie :
+        </p>
+        <a 
+          href="{{ shortUrl }}" 
+          target="_blank" 
+          class="text-blue-600 font-semibold underline"
+        >
+          {{ shortUrl }}
+        </a>
+
+        <div class="mt-4">
+          <p class="text-gray-700">📱 Scannez le QR Code :</p>
+          <img src="{{ qr }}" alt="QR Code" class="mx-auto mt-2 border rounded-lg shadow">
+        </div>
+      </div>
+    @endif
+  </div>
+
+</body>
+</html>
