@@ -40,6 +40,7 @@ export default class UrlsController {
     const url = await Url.findBy('short_code', params.code)
     if (!url) return response.redirect('/')
 
+    // Suivi de clique sur le lien
     url.clicks += 1
     await url.save()
 

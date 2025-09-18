@@ -2,7 +2,7 @@
 
 # Installation
 
-    1. Clone the repository
+    1. Clone the repository "git push -u kakesa main" 
 
     git clone https://github.com/kadea-academy-learners/2025-janv-dev-matin-exercice-mini-raccourcisseur-d-url-Kakesa.git
 
