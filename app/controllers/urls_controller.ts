@@ -1,7 +1,7 @@
 import { HttpContext } from '@adonisjs/core/http'
 import QRCode from 'qrcode'
 import Url from '#models/url'
-
+import { DateTime } from 'luxon'
 export default class UrlsController {
   /**
    * Page d'accueil avec le formulaire
@@ -40,8 +40,8 @@ export default class UrlsController {
     const url = await Url.findBy('short_code', params.code)
     if (!url) return response.redirect('/')
 
-    // Suivi de clique sur le lien
-    url.clicks += 1
+    // Sécurise le compteur
+    url.clicks = (url.clicks || 0) + 1
     await url.save()
 
     return response.redirect(url.original_url)
@@ -57,5 +57,30 @@ export default class UrlsController {
       shortCode += characters.charAt(Math.floor(Math.random() * characters.length))
     }
     return shortCode
+  }
+
+  /**
+   * Page statistiques : liste toutes les URLs
+   */
+
+  async stats({ view }: HttpContext) {
+    const urls = await Url.query().orderBy('created_at', 'desc')
+
+    const urlsWithQr = await Promise.all(
+      urls.map(async (url) => {
+        const shortUrl = `http://localhost:3333/${url.short_code}`
+        const qr = await QRCode.toDataURL(shortUrl)
+
+        return {
+          ...url.toJSON(),
+          shortUrl,
+          qr,
+          // 👇 Ici on formate directement le DateTime Luxon
+          createdAtFormatted: url.createdAt ? url.createdAt.toFormat('dd/MM/yyyy HH:mm') : '',
+        }
+      })
+    )
+
+    return view.render('stats', { urls: urlsWithQr })
   }
 }

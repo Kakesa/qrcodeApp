@@ -8,16 +8,23 @@
 */
 
 import router from '@adonisjs/core/services/router'
-import UrlsController from '#controllers/urls_controller' // Vérifiez la casse du nom du fichier
+import UrlsController from '#controllers/urls_controller'
 import { middleware } from '#start/kernel'
-
 import AuthController from '#controllers/auth_controller'
+
 // Créer une instance du contrôleur
 const urlsController = new UrlsController()
 
-// router.on('/').render('pages/home')
+// -------------------
+// URLs
+// -------------------
 router.get('/', (ctx) => urlsController.index(ctx))
 router.post('/shorten', (ctx) => urlsController.shorten(ctx))
+
+// 🟢 Mettre /stats AVANT /:code
+router.get('/stats', (ctx) => urlsController.stats(ctx))
+
+// Cette route doit venir à la fin car elle capture tous les codes courts
 router.get('/:code', (ctx) => urlsController.redirect(ctx))
 
 // -------------------

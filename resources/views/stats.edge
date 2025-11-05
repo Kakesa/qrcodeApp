@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Statistiques des URLs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+  <!-- Barre de navigation -->
+  <header class="bg-white shadow p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600">📊 Statistiques</h1>
+      <a href="/" class="text-blue-600 hover:underline">← Retour</a>
+    </div>
+  </header>
+
+  <!-- Contenu principal -->
+  <main class="flex-1 px-4 py-8">
+    <div class="max-w-6xl mx-auto bg-white shadow-lg rounded-xl p-6 overflow-x-auto">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+        Liste des URLs raccourcies
+      </h2>
+
+      @if(urls.length === 0)
+        <p class="text-center text-gray-500">Aucune URL pour le moment.</p>
+      @else
+        <table class="min-w-full border-collapse">
+          <thead>
+            <tr class="bg-blue-600 text-white text-sm sm:text-base">
+              <th class="p-3 text-left">URL originale</th>
+              <th class="p-3 text-left">URL courte</th>
+              <th class="p-3 text-center">QR Code</th>
+              <th class="p-3 text-center">Clics</th>
+              <th class="p-3 text-center">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(url in urls)
+              <tr class="border-b hover:bg-gray-50">
+                <td class="p-3 break-all text-sm sm:text-base">{{ url.original_url }}</td>
+                <td class="p-3">
+                  <a href="{{ url.shortUrl }}" target="_blank" class="text-blue-600 underline break-all">
+                    {{ url.shortUrl }}
+                  </a>
+                </td>
+                <td class="p-3 text-center">
+                  <img src="{{ url.qr }}" alt="QR" class="mx-auto w-16 h-16 rounded shadow">
+                </td>
+                <td class="p-3 text-center font-semibold text-gray-700">{{ url.clicks }}</td>
+                <td class="p-3 text-center text-gray-500 text-sm">
+                 {{ url.createdAtFormatted }}
+
+
+                </td>
+              </tr>
+            @endeach
+          </tbody>
+        </table>
+      @endif
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 text-center text-gray-500 text-sm py-4">
+    &copy; 2025 <a href="https://espoir-soft.onrender.com" class="underline hover:text-gray-700">espoir-soft</a>. Tous droits réservés.
+  </footer>
+
+</body>
+</html>
