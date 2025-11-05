@@ -6,7 +6,7 @@ export default class UrlsController {
    * Page d'accueil avec le formulaire
    */
   async index({ view }: HttpContext) {
-    return view.render('index')
+    return view.render('index', { currentPage: 'index' })
   }
 
   /**
@@ -80,6 +80,6 @@ export default class UrlsController {
       })
     )
 
-    return view.render('stats', { urls: urlsWithQr })
+    return view.render('stats', { urls: urlsWithQr, currentPage: 'stats' })
   }
 }

@@ -9,6 +9,16 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
+<header class="bg-white shadow p-4">
+  <div class="max-w-6xl mx-auto flex justify-between items-center">
+    <h1 class="text-xl font-bold text-blue-600">🔗 Raccourcisseur d’URL</h1>
+    <nav class="flex gap-4">
+      <a href="/" class="font-semibold {{ currentPage === 'home' ? 'text-blue-700 underline' : 'text-blue-600 hover:underline' }}">Accueil</a>
+      <a href="/stats" class="{{ currentPage === 'stats' ? 'text-blue-700 underline' : 'text-blue-600 hover:underline' }}">Stats</a>
+    </nav>
+  </div>
+</header>
+
   <!-- Contenu principal centré -->
   <div class="flex-1 flex items-center justify-center px-4">
     <div class="bg-white shadow-lg rounded-xl p-6 w-full max-w-md md:max-w-lg lg:max-w-xl">

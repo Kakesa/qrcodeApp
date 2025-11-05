@@ -8,13 +8,16 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-  <!-- Barre de navigation -->
   <header class="bg-white shadow p-4">
-    <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold text-blue-600">📊 Statistiques</h1>
-      <a href="/" class="text-blue-600 hover:underline">← Retour</a>
-    </div>
-  </header>
+  <div class="max-w-6xl mx-auto flex justify-between items-center">
+    <h1 class="text-xl font-bold text-blue-600">📊 Statistiques</h1>
+    <nav class="flex gap-4">
+      <a href="/" class="{{ currentPage === 'home' ? 'text-blue-700 underline' : 'text-blue-600 hover:underline' }}">Accueil</a>
+      <a href="/stats" class="font-semibold {{ currentPage === 'stats' ? 'text-blue-700 underline' : 'text-blue-600 hover:underline' }}">Stats</a>
+    </nav>
+  </div>
+</header>
+
 
   <!-- Contenu principal -->
   <main class="flex-1 px-4 py-8">
@@ -49,11 +52,7 @@
                   <img src="{{ url.qr }}" alt="QR" class="mx-auto w-16 h-16 rounded shadow">
                 </td>
                 <td class="p-3 text-center font-semibold text-gray-700">{{ url.clicks }}</td>
-                <td class="p-3 text-center text-gray-500 text-sm">
-                 {{ url.createdAtFormatted }}
-
-
-                </td>
+                <td class="p-3 text-center text-gray-500 text-sm">{{ url.createdAtFormatted }}</td>
               </tr>
             @endeach
           </tbody>
