@@ -1,7 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import QRCode from 'qrcode'
 import Url from '#models/url'
-import { DateTime } from 'luxon'
 export default class UrlsController {
   /**
    * Page d'accueil avec le formulaire
@@ -72,10 +71,10 @@ export default class UrlsController {
         const qr = await QRCode.toDataURL(shortUrl)
 
         return {
-          ...url.toJSON(),
+          original_url: url.original_url,
           shortUrl,
           qr,
-          // 👇 Ici on formate directement le DateTime Luxon
+          clicks: url.clicks,
           createdAtFormatted: url.createdAt ? url.createdAt.toFormat('dd/MM/yyyy HH:mm') : '',
         }
       })
